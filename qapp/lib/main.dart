@@ -4,31 +4,32 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // ignore: unused_element
-Map _data = (getQuakes()) as Map;
+List _data = [];
 void main() async {
-  _data = (await getQuakes()) as Map;
-  print(_data['features'][0]['properties']);
-  runApp(new MaterialApp(
-    home: new Quakes(),
+  _data = await getQuakes();
+  runApp(MaterialApp(
+    home: Quakes(),
   ));
 }
 
 class Quakes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Quakes'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Quakes'),
         centerTitle: true,
       ),
-      body: new Center(
-          child: new ListView.builder(
+      body: Center(
+          child: ListView.builder(
         itemCount: _data.length,
         padding: const EdgeInsets.all(15.0),
-        itemBuilder: (BuildContext context, int postition) {
-          return new ListTile(
-            title: new Text(
-                "$_data['properties']['place']"),
+        itemBuilder: (context, index) {
+          var feature = _data[index];
+          return Card(
+            child: ListTile(
+              title: Text(feature['properties']['place']),
+            ),
           );
         },
       )),
